@@ -1,9 +1,10 @@
 package models
 
 import (
-	"github.com/akhil/golang-csrf-project/randomstrings"
-	jwt "github.com/dgrijalva/jwt-go"
+	"golang-csrf-project/randomstrings"
 	"time"
+
+	jwt "github.com/dgrijalva/jwt-go"
 )
 
 type User struct {

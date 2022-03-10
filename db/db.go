@@ -5,10 +5,11 @@ package db
 
 import (
 	"errors"
-	"github.com/akhil/golang-csrf-project/db/models"
-	"github.com/akhil/golang-csrf-project/randomstrings"
-	"golang.org/x/crypto/bcrypt"
+	"golang-csrf-project/db/models"
+	"golang-csrf-project/randomstrings"
 	"log"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 // create a database of users
