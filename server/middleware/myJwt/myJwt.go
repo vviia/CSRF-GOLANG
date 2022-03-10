@@ -3,12 +3,13 @@ package myJwt
 import (
 	"crypto/rsa"
 	"errors"
-	"github.com/akhil/golang-csrf-project/db"
-	"github.com/akhil/golang-csrf-project/db/models"
-	jwt "github.com/dgrijalva/jwt-go"
+	"golang-csrf-project/db"
+	"golang-csrf-project/db/models"
 	"io/ioutil"
 	"log"
 	"time"
+
+	jwt "github.com/dgrijalva/jwt-go"
 )
 
 const (

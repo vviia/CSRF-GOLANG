@@ -1,14 +1,15 @@
 package middleware
 
 import (
-	"github.com/justinas/alice"
+	"golang-csrf-project/db"
+	"golang-csrf-project/server/middleware/myJwt"
+	"golang-csrf-project/server/templates"
 	"log"
 	"net/http"
-	"time"
 	"strings"
-	"github.com/akhil/golang-csrf-project/server/middleware/myJwt"
-	"github.com/akhil/golang-csrf-project/server/templates"
-	"github.com/akhil/golang-csrf-project/db"
+	"time"
+
+	"github.com/justinas/alice"
 )
 
 func NewHandler() http.Handler {
@@ -102,7 +103,7 @@ func authHandler(next http.Handler) http.Handler {
 			// And tokens have been refreshed if need-be
 			setAuthAndRefreshCookies(&w, authTokenString, refreshTokenString)
 			w.Header().Set("X-CSRF-Token", csrfSecret)
-			
+
 		default:
 			// no jwt check necessary
 		}
@@ -118,12 +119,12 @@ func logicHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Path {
 	case "/restricted":
 		csrfSecret := grabCsrfFromReq(r)
-		templates.RenderTemplate(w, "restricted", &templates.RestrictedPage{ csrfSecret, "Hello Akhil!" })
+		templates.RenderTemplate(w, "restricted", &templates.RestrictedPage{csrfSecret, "Hello Akhil!"})
 
 	case "/login":
 		switch r.Method {
 		case "GET":
-			templates.RenderTemplate(w, "login", &templates.LoginPage{ false, "" })
+			templates.RenderTemplate(w, "login", &templates.LoginPage{false, ""})
 
 		case "POST":
 			r.ParseForm()
@@ -156,8 +157,8 @@ func logicHandler(w http.ResponseWriter, r *http.Request) {
 	case "/register":
 		switch r.Method {
 		case "GET":
-			templates.RenderTemplate(w, "register", &templates.RegisterPage{ false, "" })
-		
+			templates.RenderTemplate(w, "register", &templates.RegisterPage{false, ""})
+
 		case "POST":
 			r.ParseForm()
 			log.Println(r.Form)
@@ -236,18 +237,18 @@ func logicHandler(w http.ResponseWriter, r *http.Request) {
 
 func nullifyTokenCookies(w *http.ResponseWriter, r *http.Request) {
 	authCookie := http.Cookie{
-		Name: "AuthToken",
-		Value: "",
-		Expires: time.Now().Add(-1000 * time.Hour),
+		Name:     "AuthToken",
+		Value:    "",
+		Expires:  time.Now().Add(-1000 * time.Hour),
 		HttpOnly: true,
 	}
 
 	http.SetCookie(*w, &authCookie)
 
 	refreshCookie := http.Cookie{
-		Name: "RefreshToken",
-		Value: "",
-		Expires: time.Now().Add(-1000 * time.Hour),
+		Name:     "RefreshToken",
+		Value:    "",
+		Expires:  time.Now().Add(-1000 * time.Hour),
 		HttpOnly: true,
 	}
 
@@ -268,16 +269,16 @@ func nullifyTokenCookies(w *http.ResponseWriter, r *http.Request) {
 
 func setAuthAndRefreshCookies(w *http.ResponseWriter, authTokenString string, refreshTokenString string) {
 	authCookie := http.Cookie{
-		Name: "AuthToken",
-		Value: authTokenString,
+		Name:     "AuthToken",
+		Value:    authTokenString,
 		HttpOnly: true,
 	}
 
 	http.SetCookie(*w, &authCookie)
 
 	refreshCookie := http.Cookie{
-		Name: "RefreshToken",
-		Value: refreshTokenString,
+		Name:     "RefreshToken",
+		Value:    refreshTokenString,
 		HttpOnly: true,
 	}
 

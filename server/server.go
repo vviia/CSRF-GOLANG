@@ -1,7 +1,7 @@
 package server
 
 import (
-	"github.com/akhil/golang-csrf-project/server/middleware"
+	"golang-csrf-project/server/middleware"
 	"log"
 	"net/http"
 )
